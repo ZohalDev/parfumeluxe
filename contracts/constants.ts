@@ -1,0 +1,17 @@
+export const Session = {
+  cookieName: "kimi_sid",
+  maxAgeMs: 7 * 24 * 60 * 60 * 1000,
+  issuer: "oud-royale",
+  oauthStateCookieName: "oauth_state",
+  oauthStateTtlSec: 10 * 60,
+} as const;
+
+export const ErrorMessages = {
+  unauthenticated: "Authentication required",
+  insufficientRole: "Insufficient permissions",
+} as const;
+
+export const Paths = {
+  login: "/login",
+  oauthCallback: "/api/oauth/callback",
+} as const;

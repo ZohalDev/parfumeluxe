@@ -1,0 +1,550 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #7a6030;
+    --ink: #1A1209;
+    --cream: #FAF7F0;
+    --surface: #F3EEE4;
+    --border: rgba(201,168,76,0.25);
+    --muted: #8a7a60;
+  }
+
+  body { background: var(--ink); font-family: 'Jost', sans-serif; color: var(--cream); min-height: 100vh; }
+
+  .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: #110E07;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .sidebar-brand {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); opacity: 0.7; margin-bottom: 6px;
+  }
+  .brand-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; color: var(--cream);
+    line-height: 1.2;
+  }
+  .brand-title em { color: var(--gold); font-style: italic; }
+
+  .sidebar-label {
+    padding: 20px 24px 8px;
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .article-list { padding: 0 12px 24px; }
+  .article-btn {
+    width: 100%; text-align: left;
+    padding: 10px 12px; border-radius: 6px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: 12px;
+    color: #b0a080; line-height: 1.4;
+    transition: all 0.2s; margin-bottom: 2px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .article-btn:hover { background: rgba(201,168,76,0.08); color: var(--cream); }
+  .article-btn.active { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .article-num {
+    font-size: 10px; color: var(--gold-dim); min-width: 16px;
+    font-family: 'Cormorant Garamond', serif; padding-top: 1px;
+  }
+
+  /* MAIN */
+  .main { background: var(--ink); display: flex; flex-direction: column; }
+
+  /* TOP BAR */
+  .topbar {
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(17,14,7,0.8); backdrop-filter: blur(8px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 300; color: var(--muted);
+    font-style: italic;
+  }
+  .mode-tabs { display: flex; gap: 4px; }
+  .mode-btn {
+    padding: 6px 16px; border-radius: 20px; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid var(--border); background: none;
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    color: var(--muted); transition: all 0.2s;
+  }
+  .mode-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+  .mode-btn.active {
+    background: var(--gold); border-color: var(--gold);
+    color: var(--ink); font-weight: 500;
+  }
+
+  /* CONTENT AREA */
+  .content { flex: 1; padding: 40px; max-width: 860px; }
+
+  /* LANDING */
+  .landing { text-align: center; padding: 60px 40px; }
+  .landing-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; color: var(--gold); opacity: 0.15;
+    line-height: 1; margin-bottom: 24px;
+  }
+  .landing-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; color: var(--cream);
+    line-height: 1.2; margin-bottom: 16px;
+  }
+  .landing-heading em { color: var(--gold); font-style: italic; }
+  .landing-sub {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    max-width: 480px; margin: 0 auto 40px;
+  }
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; max-width: 600px; margin: 0 auto; }
+  .feature-card {
+    background: rgba(201,168,76,0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 16px; text-align: center;
+  }
+  .feature-icon { font-size: 24px; margin-bottom: 8px; }
+  .feature-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ARTICLE PREVIEW VIEW */
+  .article-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px; margin-bottom: 32px;
+  }
+  .article-badge {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .article-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 300; color: var(--cream);
+    line-height: 1.2; margin-bottom: 16px;
+  }
+  .article-meta { display: flex; gap: 24px; }
+  .meta-item { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.5; }
+
+  /* ARTICLE CONTENT DISPLAY */
+  .article-content .ah2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 400; color: var(--gold-light);
+    margin: 32px 0 12px; padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .article-content .ah3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic; color: var(--cream);
+    margin: 24px 0 8px;
+  }
+  .article-content .ap {
+    font-size: 14px; color: #c0b090; line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .article-content .ap.bullet {
+    padding-left: 20px; position: relative;
+  }
+  .article-content .ap.bullet::before {
+    content: '◆';
+    position: absolute; left: 0;
+    font-size: 7px; color: var(--gold); top: 6px;
+  }
+
+  /* DESIGN VIEW */
+  .design-panel { display: flex; flex-direction: column; gap: 24px; }
+  .design-toolbar {
+    background: rgba(201,168,76,0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .toolbar-section { display: flex; align-items: center; gap: 12px; }
+  .toolbar-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+  .style-chip {
+    padding: 5px 14px; border-radius: 16px; font-size: 11px;
+    border: 1px solid var(--border); background: none;
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    color: var(--muted); transition: all 0.2s;
+  }
+  .style-chip:hover { border-color: var(--gold); color: var(--gold-light); }
+  .style-chip.active { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold-light); }
+
+  .gen-btn {
+    padding: 10px 28px; border-radius: 8px;
+    background: linear-gradient(135deg, #C9A84C, #E8C97A);
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: 12px;
+    font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink); transition: all 0.2s;
+  }
+  .gen-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .gen-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* PREVIEW FRAME */
+  .preview-frame {
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    background: white; min-height: 500px;
+  }
+  .preview-topbar {
+    background: #1a1a1a; padding: 12px 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .preview-url {
+    background: #2a2a2a; border-radius: 4px;
+    padding: 4px 12px; font-size: 11px; color: #888;
+    flex: 1; font-family: monospace;
+  }
+  .preview-content { overflow-y: auto; }
+
+  /* LOADING STATES */
+  .loading-state {
+    padding: 48px; text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--muted); font-style: italic;
+  }
+  .loading-dots::after {
+    content: ''; animation: dots 1.5s steps(3, end) infinite;
+  }
+  @keyframes dots {
+    0%, 33% { content: '.'; }
+    34%, 66% { content: '..'; }
+    67%, 100% { content: '...'; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, rgba(201,168,76,0.05) 25%, rgba(201,168,76,0.12) 50%, rgba(201,168,76,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px; height: 14px; margin-bottom: 8px;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* ERROR */
+  .error-box {
+    background: rgba(220,50,50,0.1); border: 1px solid rgba(220,50,50,0.3);
+    border-radius: 8px; padding: 16px 20px;
+    font-size: 13px; color: #ff8080; margin-top: 16px;
+  }
+
+  /* HTML output iframe-like */
+  #html-output { width: 100%; min-height: 600px; border: none; display: block; }
+
+  .copy-btn {
+    padding: 8px 20px; border-radius: 6px;
+    background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+    cursor: pointer; font-family: 'Jost', sans-serif; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--gold);
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: rgba(201,168,76,0.2); }
+
+  .result-toolbar {
+    padding: 12px 20px; background: #111;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .result-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+</style>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-eyebrow">Studio</div>
+      <div class="brand-title">Blog<br><em>Parfums</em></div>
+    </div>
+    <div class="sidebar-label">Articles — 10</div>
+    <div class="article-list" id="article-list"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Sélectionnez un article</div>
+      <div class="mode-tabs">
+        <button class="mode-btn active" id="tab-preview" onclick="setMode('preview')">Aperçu</button>
+        <button class="mode-btn" id="tab-design" onclick="setMode('design')">Design IA</button>
+      </div>
+    </div>
+
+    <div class="content" id="main-content">
+      <!-- LANDING -->
+      <div class="landing" id="landing">
+        <div class="landing-ornament">✦</div>
+        <h1 class="landing-heading">Votre Studio<br><em>Blog Parfums</em></h1>
+        <p class="landing-sub">10 articles SEO professionnels prêts à être designés. Sélectionnez un article, choisissez un style, et laissez l'IA générer le code HTML pour votre site.</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <div class="feature-label">10 Articles</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">◈</div>
+            <div class="feature-label">Design IA</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⬡</div>
+            <div class="feature-label">Code HTML</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const ARTICLES = [{"title":"Les 10 Meilleurs Parfums pour Homme en 2026 : Notre Sélection Élite","paragraphs":[{"type":"p","text":"Meta Title : Les 10 Meilleurs Parfums pour Homme en 2026"},{"type":"p","text":"Meta Description : Découvrez notre sélection des 10 meilleurs parfums pour homme en 2026 : fragrances tendances, durables et irrésistibles."},{"type":"p","text":"Slug : /blog/meilleurs-parfums-homme-2026"},{"type":"h2","text":"Pourquoi le choix d'un parfum est-il si important pour un homme ?"},{"type":"p","text":"Un parfum est une signature invisible mais inoubliable. Il dit qui vous êtes avant même que vous ayez prononcé un mot. Des études montrent que le sens olfactif est directement lié à la mémoire et aux émotions — un bon parfum peut donc laisser une impression durable, renforcer votre confiance et même influencer la perception des autres."},{"type":"p","text":"Choisir le bon parfum homme, c'est donc bien plus qu'une question d'esthétique. C'est une déclaration d'identité."},{"type":"h2","text":"Notre Top 10 des Parfums Homme en 2026"},{"type":"h3","text":"1. Bleu de Chanel Eau de Parfum"},{"type":"p","text":"Un classique indémodable. Bleu de Chanel offre un équilibre parfait entre fraîcheur et profondeur boisée. Notes de citron, de gingembre et de santal, avec un sillage élégant qui dure toute la journée. Idéal pour les hommes modernes qui cherchent à allier sobriété et charisme."},{"type":"h3","text":"2. Dior Sauvage Elixir"},{"type":"p","text":"Le plus vendu en Europe pour la troisième année consécutive. Sauvage Elixir est une concentration intense et animale. Un mélange de bergamote, de gingembre cannelle et d'olibanum qui envoûte littéralement. Pour l'homme qui ose."},{"type":"h3","text":"3. Tom Ford Oud Wood"},{"type":"p","text":"Un chef-d'œuvre pour les amateurs de fragrances orientales. Le bois de oud, la vanille et le vétiver créent une profondeur rare. Oud Wood est le parfum de ceux qui veulent se démarquer dans le luxe discret."},{"type":"h3","text":"4. Creed Aventus"},{"type":"p","text":"La référence en termes de statut et de puissance. Ananas, bouleau fumé, mousse de chêne et ambre. Aventus incarne la réussite et l'ambition. Un parfum d'exception à chaque occasion."},{"type":"h3","text":"5. Yves Saint Laurent L'Homme Intense"},{"type":"p","text":"Une version enrichie et séduisante de la gamme L'Homme. Des notes de cèdre, de gingembre et de vétiver pour un résultat masculin, solide et enveloppant."},{"type":"h2","text":"Comment porter ces parfums au quotidien ?"},{"type":"p","text":"Appliquez sur les points de chaleur : poignets, cou, derrière les oreilles, creux du coude."},{"type":"p","text":"Ne frottez pas — laissez le parfum se diffuser naturellement."},{"type":"p","text":"Hydratez votre peau avant : le parfum tient mieux sur peau hydratée."},{"type":"h2","text":"Conclusion"},{"type":"p","text":"Que vous soyez à la recherche d'un parfum quotidien, d'un sillage puissant pour les grandes occasions ou d'un cadeau élégant, notre sélection 2026 vous offre le meilleur de la parfumerie masculine."},{"type":"h2","text":"FAQ"},{"type":"p","text":"Quel est le parfum homme le plus populaire en 2026 ? Dior Sauvage Elixir reste le parfum le plus vendu en 2026, grâce à son sillage intense et à sa polyvalence."},{"type":"p","text":"Quelle est la différence entre un parfum et une eau de toilette pour homme ? La concentration en huiles essentielles est plus élevée dans un parfum (15-20%) que dans une eau de toilette (5-15%)."},{"type":"p","text":"Quel parfum homme choisir pour une première impression réussie ? Pour une première impression mémorable, optez pour Creed Aventus ou Bleu de Chanel EDP."}]},{"title":"Les 10 Meilleurs Parfums pour Femme en 2026 : Élégance et Séduction","paragraphs":[{"type":"p","text":"Meta Title : Les 10 Meilleurs Parfums pour Femme en 2026"},{"type":"p","text":"Slug : /blog/meilleurs-parfums-femme-2026"},{"type":"h2","text":"L'art de choisir son parfum féminin"},{"type":"p","text":"Un parfum pour femme est une extension de la personnalité. Il se transforme au contact de la peau, révèle des facettes inattendues, et crée une empreinte mémorable."},{"type":"h2","text":"Le Top 10 des Parfums Femme en 2026"},{"type":"h3","text":"1. Chanel N°5 L'Eau"},{"type":"p","text":"L'icône absolue, modernisée. La version L'Eau du mythique N°5 offre une version plus légère et contemporaine, avec ses notes d'ylang-ylang, de rose et de musc blanc."},{"type":"h3","text":"2. Dior Miss Dior Blooming Bouquet"},{"type":"p","text":"La fraîcheur incarnée. Une explosion de pivoine, de rose et de musc doux qui évoque la légèreté et la joie."},{"type":"h3","text":"3. Lancôme La Vie Est Belle"},{"type":"p","text":"Un succès mondial depuis plus d'une décennie. Iris, praline, patchouli et vanille composent cette ode au bonheur féminin."},{"type":"h3","text":"4. YSL Black Opium"},{"type":"p","text":"La rebelle séduisante. Café noir, jasmin blanc et vanille créent un contraste saisissant, electrisant, addictif."},{"type":"h3","text":"5. Guerlain Mon Guerlain"},{"type":"p","text":"Un hymne à la féminité française. La lavande de Provence, la vanille Tahitia et le santal blanc composent un accord à la fois doux, profond et poétique."},{"type":"h2","text":"Conclusion"},{"type":"p","text":"En 2026, les parfums féminins atteignent des sommets de créativité et de sophistication."}]},{"title":"Comment Choisir le Parfum Idéal selon Votre Personnalité","paragraphs":[{"type":"p","text":"Slug : /blog/choisir-parfum-selon-personnalite"},{"type":"h2","text":"Comprendre les familles olfactives"},{"type":"p","text":"Avant de choisir votre parfum, il est essentiel de comprendre les grandes familles olfactives. Chacune raconte une histoire différente et correspond à des traits de caractère particuliers."},{"type":"h3","text":"Les parfums floraux"},{"type":"p","text":"Les fragrances florales — rose, jasmin, pivoine, iris — évoquent la douceur, le romantisme et la féminité. Elles s'adressent aux personnalités sensibles, créatives et en harmonie avec leurs émotions."},{"type":"h3","text":"Les parfums boisés"},{"type":"p","text":"Santal, cèdre, oud, vétiver : les boisés symbolisent la force, la profondeur et la masculinité."},{"type":"h3","text":"Les parfums orientaux"},{"type":"p","text":"Vanille, ambre, encens, musc : les orientaux sont chauds, sensuels et mystérieux."},{"type":"h2","text":"Quel parfum pour quelle personnalité ?"},{"type":"h3","text":"Vous êtes romantique et sensible"},{"type":"p","text":"Optez pour un floral doux comme Guerlain Mon Guerlain, Jo Malone Peony & Blush Suede ou Chanel Chance Eau Tendre."},{"type":"h3","text":"Vous êtes ambitieux et charismatique"},{"type":"p","text":"Les boisés intenses et les orientaux puissants sont vos alliés. Creed Aventus, Dior Sauvage Elixir ou Tom Ford Oud Wood projettent confiance et magnétisme."},{"type":"h2","text":"Conseils pratiques"},{"type":"p","text":"Testez toujours sur peau, jamais sur papier — votre chimie cutanée transforme le parfum."},{"type":"p","text":"Attendez 20 à 30 minutes avant de juger : les notes de fond sont les plus révélatrices."}]},{"title":"Eau de Parfum ou Eau de Toilette : Quelle Différence Choisir ?","paragraphs":[{"type":"p","text":"Slug : /blog/difference-eau-de-parfum-eau-de-toilette"},{"type":"h2","text":"Qu'est-ce que la concentration d'un parfum ?"},{"type":"p","text":"La concentration d'un parfum désigne le pourcentage de composés odorants dissous dans un mélange d'alcool et d'eau. Plus la concentration est élevée, plus le parfum est intense et persistant."},{"type":"h3","text":"L'Eau de Cologne (EDC) — 2 à 5 %"},{"type":"p","text":"La concentration la plus faible. Légère, fraîche et éphémère. Elle ne tient que 1 à 2 heures."},{"type":"h3","text":"L'Eau de Toilette (EDT) — 5 à 15 %"},{"type":"p","text":"Le format le plus vendu dans le monde. L'EDT offre un bon équilibre entre légèreté et présence. Elle tient généralement entre 3 et 6 heures."},{"type":"h3","text":"L'Eau de Parfum (EDP) — 15 à 20 %"},{"type":"p","text":"Un niveau de concentration plus élevé, pour une expérience plus riche et plus durable. L'EDP tient entre 6 et 8 heures."},{"type":"h3","text":"Le Parfum / Extrait — 20 à 40 %"},{"type":"p","text":"Le nec plus ultra de la concentration. L'extrait peut tenir plus de 12 heures. Quelques touches suffisent."},{"type":"h2","text":"EDP vs EDT : laquelle choisir ?"},{"type":"p","text":"La réponse dépend de plusieurs facteurs : votre mode de vie, votre budget, la saison, l'occasion et vos préférences personnelles."}]},{"title":"Comment Faire Tenir son Parfum Plus Longtemps : 10 Astuces d'Experts","paragraphs":[{"type":"p","text":"Slug : /blog/faire-tenir-parfum-plus-longtemps"},{"type":"h2","text":"1. Hydratez votre peau avant d'appliquer le parfum"},{"type":"p","text":"C'est sans doute le conseil le plus important : une peau bien hydratée retient beaucoup mieux les molécules odorantes."},{"type":"h2","text":"2. Ciblez les points de chaleur"},{"type":"p","text":"Les zones de chaleur de votre corps amplifient la diffusion du parfum : poignets, creux du coude, cou, décolleté."},{"type":"h2","text":"3. Ne frottez pas vos poignets"},{"type":"p","text":"En frottant vos poignets après avoir vaporisé, vous brisez mécaniquement les molécules odorantes. Laissez le parfum se poser naturellement."},{"type":"h2","text":"4. Vaporisez dans les cheveux"},{"type":"p","text":"Les cheveux sont d'excellents diffuseurs de parfum. Vaporisez légèrement dans les airs et passez les cheveux dans le nuage."},{"type":"h2","text":"5. Choisissez un parfum concentré (EDP ou Extrait)"},{"type":"p","text":"Si la longévité est votre priorité, misez sur les concentrations élevées. Une EDP tient 6 à 8 heures, un Extrait plus de 12 heures."}]},{"title":"Les Meilleurs Parfums pour l'Été 2026 : Fraîcheur, Légèreté et Éclat","paragraphs":[{"type":"p","text":"Slug : /blog/meilleurs-parfums-ete"},{"type":"h2","text":"Quelles fragrances privilégier en été ?"},{"type":"p","text":"Sous la chaleur, les molécules aromatiques se diffusent plus vite. Il faut éviter les parfums trop lourds qui peuvent devenir oppressants."},{"type":"h2","text":"Les meilleurs parfums d'été pour femme"},{"type":"h3","text":"Chanel Chance Eau Fraîche"},{"type":"p","text":"La quintessence de la légèreté estivale. Citron vert, jacinthe d'eau et teck créent une fraîcheur aquatique et florale absolument irrésistible."},{"type":"h3","text":"Jo Malone Wood Sage & Sea Salt"},{"type":"p","text":"Une fragrance marine, minérale et naturelle qui évoque les côtes et les embruns. Unique, aérien, dépaysant."},{"type":"h2","text":"Les meilleurs parfums d'été pour homme"},{"type":"h3","text":"Acqua di Gio — Giorgio Armani EDT"},{"type":"p","text":"Le parfum balnéaire masculin par excellence. Marine, bergamote et musc blanc créent un accord iodé et frais."}]},{"title":"Les Meilleurs Parfums pour l'Hiver 2026 : Chaleur, Sensualité et Profondeur","paragraphs":[{"type":"p","text":"Slug : /blog/meilleurs-parfums-hiver"},{"type":"h2","text":"Pourquoi choisir un parfum différent en hiver ?"},{"type":"p","text":"La chimie olfactive est directement influencée par la température. Par temps froid, les molécules aromatiques se diffusent plus lentement, permettant aux notes de fond de s'exprimer pleinement."},{"type":"h2","text":"Les meilleures fragrances d'hiver pour femme"},{"type":"h3","text":"Lancôme La Nuit Trésor"},{"type":"p","text":"Un sillage irrésistible pour les soirées hivernales. Rose, framboises noires, vanille et héliotrope."},{"type":"h3","text":"Tom Ford Black Orchid"},{"type":"p","text":"Orchidée noire, truffe, épices orientales et bois de santal : un vortex olfactif profond et envoûtant."},{"type":"h2","text":"Les meilleures fragrances d'hiver pour homme"},{"type":"h3","text":"Tom Ford Tobacco Vanille"},{"type":"p","text":"Tabac, vanille, épices et bois de cacao : l'archétype du parfum hivernal. Chaleureux, gourmand et absolument addictif."}]},{"title":"Les Parfums les Plus Puissants en Tenue et en Sillage : Notre Sélection 2026","paragraphs":[{"type":"p","text":"Slug : /blog/parfums-plus-puissants-tenue-sillage"},{"type":"h2","text":"Qu'est-ce que le sillage d'un parfum ?"},{"type":"p","text":"Le sillage désigne la traîne olfactive qu'un parfum laisse derrière soi. Un grand sillage, c'est être présent olfactivement même après avoir quitté la pièce."},{"type":"h2","text":"Les ingrédients qui assurent la puissance"},{"type":"p","text":"L'oud : notes animales, profondes et persistantes. L'ambre et la vanille : bases chaudes qui ancrent le parfum. Le patchouli : molécule puissante et fixateur naturel. Le musc : la colle qui retient toutes les autres notes."},{"type":"h2","text":"Top des parfums les plus puissants pour homme"},{"type":"h3","text":"Dior Sauvage Elixir — Tenue 12h+"},{"type":"p","text":"La version la plus concentrée et la plus intense de la gamme Sauvage. Un accord boisé musqué avec cannelle, bergamote et olibanum."},{"type":"h3","text":"Creed Aventus — Extrait"},{"type":"p","text":"La version Extrait est d'une puissance olfactive extraordinaire. Quelques gouttes suffisent pour une présence qui dure 24 heures."}]},{"title":"Les Meilleurs Parfums à Offrir en Cadeau en 2026 : Guide Complet","paragraphs":[{"type":"p","text":"Slug : /blog/meilleurs-parfums-cadeau"},{"type":"h2","text":"Comment choisir un parfum pour quelqu'un d'autre ?"},{"type":"p","text":"Avant de choisir, posez-vous ces questions essentielles : personnalité du destinataire, ses parfums habituels, l'occasion, votre budget."},{"type":"h2","text":"Les meilleurs parfums cadeaux pour elle"},{"type":"h3","text":"Chanel N°5 — L'indétrônable classique"},{"type":"p","text":"Offrir Chanel N°5, c'est offrir un morceau de légende. Impossible de se tromper avec ce parfum universel et sophistiqué."},{"type":"h3","text":"Dior Miss Dior Blooming Bouquet"},{"type":"p","text":"Frais, floral et romantique, ce parfum convient parfaitement aux jeunes femmes et aux esprits romantiques."},{"type":"h2","text":"Les meilleurs parfums cadeaux pour lui"},{"type":"h3","text":"Dior Sauvage EDT"},{"type":"p","text":"Le parfum masculin le plus offert en France depuis 5 ans. Son accord frais-boisé est universellement apprécié."},{"type":"h2","text":"Idées cadeaux par occasion"},{"type":"p","text":"Saint-Valentin : orientaux sensuels. Fête des mères : floraux doux. Noël : orientaux et boisés chaleureux."}]},{"title":"Comment Reconnaître un Parfum Original d'une Contrefaçon : Guide Complet","paragraphs":[{"type":"p","text":"Slug : /blog/reconnaitre-parfum-original-contrefacon"},{"type":"h2","text":"Vérifier le flacon et l'emballage"},{"type":"h3","text":"La qualité du verre"},{"type":"p","text":"Les grands parfumeurs utilisent du verre épais, lourd et parfaitement transparent. Un flacon contrefait est souvent plus léger, avec des bulles d'air ou des imperfections."},{"type":"h3","text":"L'étiquette et les inscriptions"},{"type":"p","text":"Examinez les polices de caractères, l'alignement, la précision des graphismes. Sur un original, elles sont parfaites, nettes, sans bavures."},{"type":"h2","text":"Analyser la boîte d'emballage"},{"type":"p","text":"Vérifiez le numéro de lot sur la boîte et le flacon : ils doivent correspondre. Examinez la qualité du carton, le cellophane, le code QR."},{"type":"h2","text":"Sentir et évaluer le parfum"},{"type":"p","text":"Un parfum original est une composition parfaitement équilibrée. Les contrefaçons sentent souvent trop âcre ou trop chimique, sans progression ni complexité."},{"type":"h2","text":"Les bonnes pratiques d'achat"},{"type":"p","text":"Achetez uniquement auprès de revendeurs officiels. Méfiez-vous des prix anormalement bas. Demandez toujours une facture détaillée."}]}];
+
+const STYLES = [
+  { id: 'luxury', label: 'Luxury Dark', desc: 'fond sombre, or, typographie élégante' },
+  { id: 'minimal', label: 'Minimal Clean', desc: 'blanc pur, épuré, moderne' },
+  { id: 'editorial', label: 'Magazine', desc: 'style éditorial, grandes typographies' },
+  { id: 'botanical', label: 'Botanique', desc: 'vert sauge, organique, naturel' },
+];
+
+let currentArticle = null;
+let currentStyle = 'luxury';
+let currentMode = 'preview';
+let generatedHTML = '';
+
+// Build sidebar
+const list = document.getElementById('article-list');
+ARTICLES.forEach((art, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'article-btn';
+  btn.innerHTML = `<span class="article-num">${String(i+1).padStart(2,'0')}</span><span>${art.title}</span>`;
+  btn.onclick = () => selectArticle(i);
+  list.appendChild(btn);
+});
+
+function selectArticle(idx) {
+  currentArticle = idx;
+  document.querySelectorAll('.article-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+  document.getElementById('topbar-title').textContent = `Article ${idx+1} / 10`;
+  renderCurrentMode();
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-preview').classList.toggle('active', mode==='preview');
+  document.getElementById('tab-design').classList.toggle('active', mode==='design');
+  if (currentArticle !== null) renderCurrentMode();
+}
+
+function renderCurrentMode() {
+  if (currentMode === 'preview') renderPreview();
+  else renderDesignPanel();
+}
+
+function renderPreview() {
+  if (currentArticle === null) return;
+  const art = ARTICLES[currentArticle];
+  const content = document.getElementById('main-content');
+  const paras = art.paragraphs.filter(p => !p.text.startsWith('Meta') && !p.text.startsWith('Slug'));
+
+  let html = `
+    <div>
+      <div class="article-header">
+        <div class="article-badge">✦ Article ${currentArticle+1} sur 10 — Blog Parfums</div>
+        <h1 class="article-title">${art.title}</h1>
+        <div class="article-meta">
+          <span class="meta-item"><span class="meta-dot"></span> SEO Optimisé</span>
+          <span class="meta-item"><span class="meta-dot"></span> 1200–2000 mots</span>
+          <span class="meta-item"><span class="meta-dot"></span> Français</span>
+        </div>
+      </div>
+      <div class="article-content">
+  `;
+  paras.forEach(p => {
+    if (p.type === 'h2') html += `<div class="ah2">${p.text}</div>`;
+    else if (p.type === 'h3') html += `<div class="ah3">${p.text}</div>`;
+    else html += `<div class="ap">${p.text}</div>`;
+  });
+  html += `</div></div>`;
+  content.innerHTML = html;
+}
+
+function renderDesignPanel() {
+  if (currentArticle === null) return;
+  const art = ARTICLES[currentArticle];
+  const content = document.getElementById('main-content');
+
+  let stylesHTML = STYLES.map(s => `
+    <button class="style-chip ${s.id===currentStyle?'active':''}" onclick="selectStyle('${s.id}')">${s.label}</button>
+  `).join('');
+
+  content.innerHTML = `
+    <div class="design-panel">
+      <div class="design-toolbar">
+        <div>
+          <div class="toolbar-label" style="margin-bottom:8px">Style visuel</div>
+          <div class="toolbar-section">${stylesHTML}</div>
+        </div>
+        <button class="gen-btn" id="gen-btn" onclick="generateDesign()">
+          ✦ Générer le Design
+        </button>
+      </div>
+      <div class="preview-frame">
+        <div class="preview-topbar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <div class="preview-url">votresite.com${getSlug(art)}</div>
+        </div>
+        <div class="preview-content" id="preview-content">
+          <div class="loading-state" style="color:var(--muted);font-style:italic;font-size:14px;padding:48px;text-align:center;">
+            Cliquez sur <strong style="color:var(--gold)">✦ Générer le Design</strong> pour lancer l'IA
+          </div>
+        </div>
+      </div>
+      <div id="code-panel"></div>
+    </div>
+  `;
+}
+
+function selectStyle(id) {
+  currentStyle = id;
+  document.querySelectorAll('.style-chip').forEach(c => c.classList.toggle('active', c.textContent.trim() === STYLES.find(s=>s.id===id).label));
+  renderDesignPanel();
+}
+
+function getSlug(art) {
+  const slugP = art.paragraphs.find(p => p.text.startsWith('Slug :'));
+  return slugP ? slugP.text.replace('Slug : ', '') : '/blog/article';
+}
+
+async function generateDesign() {
+  const art = ARTICLES[currentArticle];
+  const btn = document.getElementById('gen-btn');
+  const previewContent = document.getElementById('preview-content');
+  if (!btn || !previewContent) return;
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Génération...';
+
+  previewContent.innerHTML = `
+    <div style="padding:32px 40px">
+      <div class="shimmer" style="width:60%;height:40px;margin-bottom:16px"></div>
+      <div class="shimmer" style="width:90%;height:14px;margin-bottom:8px"></div>
+      <div class="shimmer" style="width:80%;height:14px;margin-bottom:8px"></div>
+      <div class="shimmer" style="width:85%;height:14px;margin-bottom:32px"></div>
+      <div class="shimmer" style="width:40%;height:24px;margin-bottom:12px"></div>
+      <div class="shimmer" style="width:95%;height:14px;margin-bottom:8px"></div>
+      <div class="shimmer" style="width:88%;height:14px;margin-bottom:8px"></div>
+    </div>
+    <div style="text-align:center;padding:16px 0 32px;font-family:Cormorant Garamond,serif;font-size:16px;color:var(--gold);font-style:italic">
+      L'agent IA conçoit votre page<span class="loading-dots"></span>
+    </div>
+  `;
+
+  const styleGuides = {
+    luxury: 'Dark luxury: deep black/dark charcoal background (#0D0B07), gold accents (#C9A84C), cream text (#FAF7F0). Cormorant Garamond serif for titles, light weight. Thin gold decorative lines. Very generous whitespace. Subtle gold gradient on H1.',
+    minimal: 'Ultra minimal: pure white background, black text (#111), single accent color (deep navy #0A1628). Clean sans-serif (use Google Fonts: Outfit). Lots of whitespace. No decorative elements. Understated and refined.',
+    editorial: 'Magazine editorial: off-white cream background (#FDFAF4), large dramatic typography mixing serif (Playfair Display) and sans. Bold oversized article number. Black and terracotta (#C4532A) accent color. Asymmetric layout feeling.',
+    botanical: 'Botanical organic: sage green tones (#E8EDE0 background, #3D5A3E dark green), warm cream text areas. Earthy, natural. Use Google Fonts: DM Serif Display + DM Sans. Soft, organic feel with subtle leaf/nature motifs via CSS.'
+  };
+
+  const articleText = art.paragraphs
+    .filter(p => !p.text.startsWith('Meta') && !p.text.startsWith('Slug'))
+    .slice(0, 20)
+    .map(p => {
+      if (p.type === 'h2') return `## ${p.text}`;
+      if (p.type === 'h3') return `### ${p.text}`;
+      return p.text;
+    }).join('\n\n');
+
+  const prompt = `You are an expert web designer. Create a beautiful, complete HTML blog article page for a French perfume e-commerce website.
+
+ARTICLE TITLE: ${art.title}
+
+ARTICLE CONTENT (use this real content):
+${articleText}
+
+DESIGN STYLE: ${styleGuides[currentStyle]}
+
+REQUIREMENTS:
+- Complete self-contained HTML page with embedded CSS and minimal JS
+- Beautiful, professional design matching the style perfectly
+- Google Fonts import in <head>
+- Responsive layout
+- Include: hero section with title, article body with proper H2/H3 styling, a CTA button "Découvrir nos parfums →", and a simple FAQ section
+- The article must feel like a real premium perfume brand blog
+- NO placeholder text - use the real article content provided
+- Include subtle hover effects and smooth transitions
+- Footer with "© 2026 — Votre Boutique Parfums"
+- Output ONLY the complete HTML, no explanation, no markdown code blocks`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+
+    let html = data.content.map(b => b.text || '').join('');
+    html = html.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+    generatedHTML = html;
+
+    previewContent.innerHTML = `<iframe id="html-output" srcdoc="${escapeAttr(html)}" style="width:100%;min-height:700px;border:none;display:block;"></iframe>`;
+
+    document.getElementById('code-panel').innerHTML = `
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px">
+        <div class="result-toolbar">
+          <span class="result-label">✦ Code HTML généré — prêt à copier</span>
+          <button class="copy-btn" onclick="copyCode()">Copier le code</button>
+        </div>
+        <div style="background:#0a0a0a;padding:20px 24px;max-height:200px;overflow-y:auto">
+          <code style="font-size:11px;color:#a0c080;font-family:monospace;line-height:1.6;white-space:pre-wrap">${escapeHtml(html.slice(0, 800))}...</code>
+        </div>
+      </div>
+    `;
+
+  } catch (err) {
+    previewContent.innerHTML = `<div class="error-box" style="margin:24px">Erreur : ${err.message}</div>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✦ Régénérer';
+}
+
+function copyCode() {
+  if (!generatedHTML) return;
+  navigator.clipboard.writeText(generatedHTML).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    if (btn) { btn.textContent = '✓ Copié !'; setTimeout(() => btn.textContent = 'Copier le code', 2000); }
+  });
+}
+
+function escapeAttr(str) {
+  return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
